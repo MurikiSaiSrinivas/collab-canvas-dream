@@ -40,7 +40,7 @@ const ResultPage = () => {
     // In a real app, this would download the actual generated image
     const link = document.createElement('a');
     link.href = resultImage || '';
-    link.download = `drawsync-${roomId}.jpg`;
+    link.download = `vibecanva-${roomId}.jpg`;
     link.click();
   };
   
@@ -52,7 +52,7 @@ const ResultPage = () => {
     <div className="min-h-screen bg-app-background p-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">DrawSync Result</h1>
+          <h1 className="text-3xl font-bold mb-2">VibeCanva Result</h1>
           <p className="text-gray-600">Room: {roomId}</p>
         </div>
         

@@ -97,7 +97,7 @@ const RoomPage = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold">DrawSync</h1>
+            <h1 className="text-2xl font-bold">VibeCanva</h1>
             <div className="text-sm text-gray-500">Room: {roomId} • User: {username}</div>
           </div>
           

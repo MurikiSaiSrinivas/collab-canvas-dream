@@ -26,17 +26,17 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#33C3F0',
-					hover: '#1EAEDB',
+					DEFAULT: '#8C66FA', // vibrant purple
+					hover: '#7856E8',
 					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: '#E5DEFF',
-					foreground: '#4B4B4B'
+					DEFAULT: '#FEC7D7', // soft pink
+					foreground: '#2E2E2E'
 				},
 				accent: {
-					DEFAULT: '#FDE1D3',
-					foreground: '#4B4B4B'
+					DEFAULT: '#A0E7E5', // aqua mint
+					foreground: '#2E2E2E'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -65,12 +65,16 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				app: {
-					background: '#F1F0FB',
-					text: '#222222',
+					background: '#F9F9FB', // very light gray
+					text: '#2E2E2E', // neutral dark gray
+					gradient: 'linear-gradient(90deg, #8C66FA 0%, #A0E7E5 100%)' // gradient you specified
 				}
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
+			},
+			backgroundImage: {
+				'gradient-primary': 'linear-gradient(90deg, #8C66FA 0%, #A0E7E5 100%)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

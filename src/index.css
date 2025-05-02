@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -97,5 +98,37 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-primary;
+  }
+  
+  .gradient-border {
+    position: relative;
+    border-radius: 0.5rem;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 0.6rem;
+    background: linear-gradient(90deg, #8C66FA 0%, #A0E7E5 100%);
+    z-index: -1;
+  }
+  
+  .gradient-bg {
+    @apply bg-gradient-primary;
+  }
+  
+  .gradient-button {
+    @apply bg-gradient-primary text-white hover:opacity-90 transition-opacity;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg;
   }
 }

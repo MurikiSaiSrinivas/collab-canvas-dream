@@ -52,53 +52,58 @@ const ResultPage = () => {
     <div className="min-h-screen bg-app-background p-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">VibeCanva Result</h1>
+          <h1 className="text-3xl font-bold mb-2 gradient-text">VibeCanva Result</h1>
           <p className="text-gray-600">Room: {roomId}</p>
         </div>
         
-        <div className="bg-white rounded-lg shadow-md p-6">
-          {isGenerating ? (
-            <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-xl font-medium mb-2">Generating Your Masterpiece</h2>
-                <p className="text-gray-500 mb-4">Combining your drawings into something amazing...</p>
-              </div>
-              
-              <Progress value={progress} className="h-2" />
-              
-              <div className="text-center text-sm text-gray-500">
-                {progress}% complete
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-xl font-medium mb-2">Your Creation Is Ready!</h2>
-                <p className="text-gray-500 mb-4">Here's what we generated from your collaborative artwork</p>
-              </div>
-              
-              {resultImage && (
-                <div className="rounded-lg overflow-hidden shadow-md">
-                  <img 
-                    src={resultImage} 
-                    alt="Generated artwork" 
-                    className="w-full h-auto"
-                  />
+        <Card className="shadow-lg border border-opacity-20 overflow-hidden">
+          <CardContent className="p-6">
+            {isGenerating ? (
+              <div className="space-y-6">
+                <div className="text-center">
+                  <h2 className="text-xl font-medium mb-2">Generating Your Masterpiece</h2>
+                  <p className="text-gray-500 mb-4">Combining your drawings into something amazing...</p>
                 </div>
-              )}
-              
-              <div className="flex justify-center gap-4">
-                <Button onClick={handleDownload}>
-                  Download Image
-                </Button>
                 
-                <Button variant="outline" onClick={handleRestart}>
-                  New Drawing
-                </Button>
+                <Progress value={progress} className="h-2" 
+                  // Apply gradient to progress bar
+                  style={{background: 'linear-gradient(90deg, #8C66FA 0%, #A0E7E5 100%)'}} 
+                />
+                
+                <div className="text-center text-sm text-gray-500">
+                  {progress}% complete
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="space-y-6">
+                <div className="text-center">
+                  <h2 className="text-xl font-medium mb-2 gradient-text">Your Creation Is Ready!</h2>
+                  <p className="text-gray-500 mb-4">Here's what we generated from your collaborative artwork</p>
+                </div>
+                
+                {resultImage && (
+                  <div className="rounded-lg overflow-hidden shadow-md gradient-border">
+                    <img 
+                      src={resultImage} 
+                      alt="Generated artwork" 
+                      className="w-full h-auto"
+                    />
+                  </div>
+                )}
+                
+                <div className="flex justify-center gap-4">
+                  <Button onClick={handleDownload} className="gradient-bg">
+                    Download Image
+                  </Button>
+                  
+                  <Button variant="outline" onClick={handleRestart} className="border-primary text-primary hover:text-white hover:bg-primary">
+                    New Drawing
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

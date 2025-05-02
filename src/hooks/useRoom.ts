@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { socketService } from '../services/socketService';
 import { useDrawStore } from '../store/useDrawStore';
@@ -19,7 +18,8 @@ export function useRoom() {
     setIsRoomCreator,
     setOtherUser,
     addMessage,
-    setOtherUserState
+    setOtherUserState,
+    messages
   } = useDrawStore();
   
   useEffect(() => {
@@ -57,7 +57,16 @@ export function useRoom() {
         setOtherUser(null);
       })
       .on('new_message', (data) => {
-        addMessage(data.sender, data.text);
+        // Check if message already exists in the state to prevent duplication
+        const isDuplicate = messages.some(msg => 
+          msg.text === data.text && 
+          msg.sender === data.sender && 
+          new Date(msg.timestamp).getTime() > Date.now() - 2000
+        );
+        
+        if (!isDuplicate) {
+          addMessage(data.sender, data.text);
+        }
       })
       .on('other_user_ready', (data) => {
         setOtherUserState('ready');
@@ -78,7 +87,7 @@ export function useRoom() {
     return () => {
       socketService.disconnect();
     };
-  }, []);
+  }, [messages]);
   
   const createRoom = (username: string) => {
     if (!username.trim()) {

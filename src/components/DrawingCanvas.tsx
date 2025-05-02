@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCanvas } from '@/hooks/useCanvas';
 import { useDrawStore } from '@/store/useDrawStore';
 
@@ -28,6 +28,31 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
   
   const canvasLocked = useDrawStore(state => state.canvasLocked);
   
+  // Fix cursor position by adjusting for any scaling
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    // Function to handle resolution scaling
+    const resizeCanvas = () => {
+      const displayWidth = canvas.clientWidth;
+      const displayHeight = canvas.clientHeight;
+      
+      // Only update if dimensions have changed
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+    };
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, [canvasRef, width, height]);
+  
   return (
     <div className="relative">
       {canvasLocked && (
@@ -40,6 +65,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({
       <div className="border border-gray-200 rounded-lg shadow-md overflow-hidden">
         <canvas
           id={canvasId}
+          ref={canvasRef}
           className="bg-white touch-none"
           onMouseDown={startDrawing}
           onMouseMove={draw}

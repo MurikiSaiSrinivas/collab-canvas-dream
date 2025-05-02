@@ -4,6 +4,7 @@ import { io, Socket } from 'socket.io-client';
 class SocketService {
   private socket: Socket | null = null;
   private callbacks: { [event: string]: Function[] } = {};
+  private messageCache: Set<string> = new Set();
 
   connect(url: string = 'https://mock-socket-server.com') {
     // In a real app, this would connect to your actual socket server
@@ -68,15 +69,30 @@ class SocketService {
         }, 300);
         break;
         
-      case 'send_message':
-        setTimeout(() => {
-          this.trigger('new_message', {
-            sender: data.sender,
-            text: data.text,
-            timestamp: new Date()
-          });
-        }, 200);
+      case 'send_message': {
+        // Create a unique signature for this message to avoid duplicates
+        const msgSignature = `${data.sender}:${data.text}:${Date.now()}`;
+        
+        // Only process if not a recent duplicate
+        if (!this.messageCache.has(msgSignature)) {
+          this.messageCache.add(msgSignature);
+          
+          // Auto-expire message from cache after 5 seconds
+          setTimeout(() => {
+            this.messageCache.delete(msgSignature);
+          }, 5000);
+          
+          // Send exactly once
+          setTimeout(() => {
+            this.trigger('new_message', {
+              sender: data.sender,
+              text: data.text,
+              timestamp: new Date()
+            });
+          }, 200);
+        }
         break;
+      }
         
       case 'user_ready':
         setTimeout(() => {

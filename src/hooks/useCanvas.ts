@@ -52,21 +52,39 @@ export function useCanvas({ canvasId, width = 800, height = 600 }: UseCanvasProp
     contextRef.current.lineWidth = brushSize;
   }, [brushColor, brushSize, selectedTool]);
   
+  // Improved cursor position calculation
+  const getCoordinates = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!canvasRef.current) return { x: 0, y: 0 };
+    
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    
+    // Calculate scale factors
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    
+    // Apply scaling to coordinates
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+    
+    return { x, y };
+  };
+  
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (canvasLocked || !contextRef.current || !canvasRef.current) return;
     
     isDrawing.current = true;
     
-    const { offsetX, offsetY } = e.nativeEvent;
+    const { x, y } = getCoordinates(e);
     contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
+    contextRef.current.moveTo(x, y);
   };
   
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing.current || canvasLocked || !contextRef.current) return;
     
-    const { offsetX, offsetY } = e.nativeEvent;
-    contextRef.current.lineTo(offsetX, offsetY);
+    const { x, y } = getCoordinates(e);
+    contextRef.current.lineTo(x, y);
     contextRef.current.stroke();
   };
   
